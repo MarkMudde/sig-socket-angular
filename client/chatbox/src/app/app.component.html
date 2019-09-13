@@ -1,0 +1,3 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<app-login *ngIf="isSignedIn === false" (onSignIn)="isSignedIn = true"></app-login>
+<app-chat *ngIf="isSignedIn === true" (onSignOut)="isSignedIn = false"></app-chat>
