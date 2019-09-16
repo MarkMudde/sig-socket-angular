@@ -39,7 +39,6 @@ io.on("connection", function (client) {
   });
 
   client.on("enter", function (userName) {
-    console.log("*** enter")
     const newUser: IUser = { id: client.id, name: userName };
     addUser(newUser);
     io.to(client.id).emit("updateUser", newUser);

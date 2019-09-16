@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HandlerService } from "./services/handler.service";
-import { IChatHistoryMessage } from "./model/chat.model";
+import { IChatHistoryMessage, IPrivateChatHistoryMessage } from "./model/chat.model";
 import { IUser } from "./model/user.model";
 
 @Component({
@@ -13,11 +13,11 @@ export class AppComponent implements OnInit {
   user: IUser;
   connectedUsers: IUser[];
   chatHistory: IChatHistoryMessage[] = [];
-  chatmessage = "";
-  handler;
+  privateChatHistory: IPrivateChatHistoryMessage[] = [];
+  handler: any;
 
   constructor(private handlerService: HandlerService) {
-    this.handler = handlerService.handler(this.updateChat());
+    this.handler = this.handlerService.handler(this.updateChat());
   }
 
   ngOnInit() {
@@ -25,19 +25,6 @@ export class AppComponent implements OnInit {
   }
 
   updateChat() {
-    console.log("HOI");
-    function exitChatRoom(user: IUser) {
-      this.handler.userLeft(user);
-      this.isSignedIn = false;
-      this.onSignOut.emit();
-    }
-
-    const sendMessage = (message: string) => {
-      console.log("sendMessage");
-      this.handler.message({ user: this.user, message, type: "user" });
-      this.chatmessage = "";
-    };
-
     const updateUser = (user: IUser) => {
       this.user = user;
     };
@@ -46,24 +33,23 @@ export class AppComponent implements OnInit {
       this.connectedUsers = users;
     };
 
-    const updateChatHistory = (chatMessage: IChatHistoryMessage) => {
+    const updateHistory = (chatMessage: IChatHistoryMessage) => {
       this.chatHistory.push(chatMessage);
     };
 
-    // const updatePrivateChatHistory = (chatMessage: IPrivateChatHistoryMessage) => {
-    //   this.privateChatHistory.push(chatMessage);
-    // };
+    const updatePrivateChatHistory = (chatMessage: IPrivateChatHistoryMessage) => {
+      this.privateChatHistory.push(chatMessage);
+    };
 
     return {
-      exitChatRoom,
-      sendMessage,
       updateUser,
       updateUsers,
-      updateChatHistory
+      updateHistory,
+      updatePrivateChatHistory
     };
   }
 
-  setIsSignedIn() {
-    this.isSignedIn = true;
+  setSignedIn(signedIn: boolean) {
+    this.isSignedIn = signedIn;
   }
 }

@@ -1,3 +1,12 @@
-<p>
-    connected-users works!
-</p>
+<div class="connectedUsers">
+  <p>Users in deze chatroom</p>
+  <p>klik op een naam voor een prive gesprek</p>
+  <div *ngFor="let conUser of connectedUsers">
+    <button
+      (click)="openPrivateChat(conUser)"
+      [disabled]="conUser.id == user.id"
+    >
+      {{ conUser.name }}
+    </button>
+  </div>
+</div>

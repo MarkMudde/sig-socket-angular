@@ -1,29 +1,29 @@
 <div style="text-align:center">
-    <h1>
-        Welcome to {{ title }}!
-    </h1>
-    <h2>
-        {{subtitle}}
-    </h2>
+  <h1>Welcome to {{ title }}!</h1>
+  <h2>
+    {{ subtitle }}
+  </h2>
 </div>
 
 <div class="chatroom">
-    <div class="chatbox">
-        <div *ngFor="let chatmessage of chatHistory">
-            <ng-container *ngIf="chatmessage.type === 'bot'">
-                {{chatmessage.user.name}} {{chatmessage.message}}
-            </ng-container>
-            <ng-container *ngIf="chatmessage.type === 'user'">
-                {{chatmessage.user.name}} zegt: {{chatmessage.message}}
-            </ng-container>
-        </div>
+  <div class="chatbox">
+    <div *ngFor="let chatmessage of chatHistory">
+      <ng-container *ngIf="chatmessage.type === 'bot'">
+        {{ chatmessage.user.name }} {{ chatmessage.message }}
+      </ng-container>
+      <ng-container *ngIf="chatmessage.type === 'user'">
+        {{ chatmessage.user.name }} zegt: {{ chatmessage.message }}
+      </ng-container>
     </div>
+  </div>
 </div>
 <!--private chat moet nog wel eea aan gebeuren!! -->
-<div id=privatechat class=private-chat></div>
+<div id="privatechat" class="private-chat"></div>
 <div>
-    <input type="text" #message [(ngModel)]="chatmessage">
-    <button type="submit" (click)="handler.sendMessage(message.value)">Send</button>
+  <input type="text" #message [(ngModel)]="chatmessage" />
+  <button type="submit" (click)="sendMessage(message.value)">Send</button>
 </div>
 
-<button class="float-right" type="submit" (click)="exitChatRoom(user)">Exit Chatroom</button>
+<button class="float-right" type="submit" (click)="exitChatRoom(user)">
+  Exit Chatroom
+</button>
