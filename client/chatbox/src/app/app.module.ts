@@ -7,12 +7,16 @@ import { AppComponent } from './app.component';
 import { HandlerService } from './services/handler.service';
 import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './login/login.component';
+import { ConnectedUsersComponent } from './connected-users/connected-users.component';
+import { PrivateChatComponent } from './private-chat/private-chat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatComponent,
-    LoginComponent
+    LoginComponent,
+    ConnectedUsersComponent,
+    PrivateChatComponent
   ],
   imports: [
     BrowserModule,

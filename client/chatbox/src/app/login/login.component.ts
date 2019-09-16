@@ -1,5 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { HandlerService } from '../services/handler.service';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -7,15 +6,16 @@ import { HandlerService } from '../services/handler.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
   isSignedIn: boolean;
+  @Input() handler: () => any;
   @Output() onSignIn = new EventEmitter<boolean>();
 
-  constructor(private handlerService: HandlerService) { }
+  constructor() {
+  }
 
   enterChatRoom(username: string) {
     if (username) {
-      this.handlerService.userConnected(username);
+      // this..userConnected(username);
       this.isSignedIn = true;
       this.onSignIn.emit();
     }

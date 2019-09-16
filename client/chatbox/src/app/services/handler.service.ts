@@ -6,58 +6,61 @@ import Socketio from 'socket.io-client';
 })
 export class HandlerService {
 
-  private socket = Socketio.connect('ws://localhost:3100');
+  public handler = (updateChat) => {
+    console.log("updateChat", updateChat)
+    const socket = Socketio.connect('http://localhost:3100');
 
-  // Listeners
-  public onMessage(updateChatHistory) {
-    this.socket.on('message', payload => {
-      updateChatHistory(payload);
+    // listeners - incoming events
+    socket.on('error', function (err: any) {
+      console.log('Error:', err);
     });
-  }
 
-  public onPrivateMessage(updatePrivateChatHistory) {
-    this.socket.on('privateChatMessage', payload => {
-      updatePrivateChatHistory(payload);
+    socket.on('message', function (payload) {
+      updateChat.sendMessage(payload);
     });
-  }
 
-  public updateUser(updateUser) {
-    this.socket.on('updateUser', user => {
-      updateUser(user);
+    socket.on('privateMessage', function (payload) {
+      updateChat.updatePrivateHistory(payload);
     });
-  }
-  public updateUsers(updateUsers) {
-  this.socket.on('updateUsers', connectedUsers => {
-    updateUsers(connectedUsers);
-  });
-}
 
-  public onEnter(updateChatHistory) {
-    this.socket.on('enter', user => {
-      updateChatHistory({user, message: ' has entered this chatroom', type: 'bot'});
+    socket.on('leave', function (userName) {
+      updateChat.updateHistory({ userName, message: 'has left chat' });
     });
-  }
 
-  public onLeave(updateChatHistory) {
-    this.socket.on('leave', user => {
-      updateChatHistory({user, message: ' has left the building', type: 'bot'});
+    socket.on('enter', function (userName) {
+      updateChat.updateHistory({ userName, message: 'has entered chat' });
     });
+
+    socket.on('updateUser', function (user) {
+      updateChat.updateUser(user);
+    });
+    socket.on('updateUsers', function (connectedUsers) {
+      updateChat.updateUsers(connectedUsers);
+    });
+
+    // outgoing events
+    const message = (userName, message) => {
+      console.log("message in client")
+      socket.emit('message', { userName, message });
+    };
+
+    const privateMessage = payload => {
+      socket.emit('privateMessage', payload);
+    };
+
+    const leave = userName => {
+      socket.emit('leave', userName);
+    };
+
+    const enter = userName => {
+      socket.emit('enter', userName);
+    };
+
+    return {
+      message,
+      privateMessage,
+      enter,
+      leave
+    };
   }
-
-  public userConnected = (username) => {
-    this.socket.emit('enter', username);
-  }
-
-  public userLeft = (user) => {
-    this.socket.emit('leave', user);
-  }
-
-  public message = (payload) => {
-      this.socket.emit('message', payload);
-  }
-
-  public privateMessage = (payload) => {
-    this.socket.emit('privateMessage', payload);
-}
-
-}
+};

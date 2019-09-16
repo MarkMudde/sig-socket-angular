@@ -18,19 +18,12 @@
             </ng-container>
         </div>
     </div>
-    <div class="connectedUsers">
-        <p>Users in deze chatroom</p>
-        <p>klik op een naam voor een prive gesprek</p>
-        <div *ngFor="let conUser of connectedUsers">
-            <button (click)="openPrivateChat(conUser)" [disabled]="conUser.id == user.id">{{conUser.name}}</button>
-        </div>
-    </div>
 </div>
 <!--private chat moet nog wel eea aan gebeuren!! -->
 <div id=privatechat class=private-chat></div>
 <div>
     <input type="text" #message [(ngModel)]="chatmessage">
-    <button type="submit" (click)="sendMessage(message.value)">Send</button>
+    <button type="submit" (click)="handler.sendMessage(message.value)">Send</button>
 </div>
 
 <button class="float-right" type="submit" (click)="exitChatRoom(user)">Exit Chatroom</button>

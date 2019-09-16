@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { HandlerService } from '../services/handler.service';
 import { IUser } from '../model/user.model';
 import { IChatHistoryMessage, IPrivateChatHistoryMessage } from '../model/chat.model';
@@ -9,63 +9,24 @@ import { IChatHistoryMessage, IPrivateChatHistoryMessage } from '../model/chat.m
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+  @Input() handler: () => any;
 
   title = 'the most interesting chatbox on earth';
   subtitle = '~~~ only discuss interesting subjects ~~~';
-  chatHistory: IChatHistoryMessage[] = [];
-  privateChatHistory: IPrivateChatHistoryMessage[] =[];
-  user: IUser;
-  connectedUsers: IUser[];
-
-  chatmessage = '';
+  privateChatHistory: IPrivateChatHistoryMessage[] = [];
   isSignedIn: boolean;
   openPopUp = false;
   selectedUser: IUser;
 
-  @Output() onSignOut = new EventEmitter<boolean>();
-
-  constructor(private handlerService: HandlerService) {  }
+  // @Output() onSignOut = new EventEmitter<boolean>();
 
   ngOnInit() {
-    this.handlerService.updateUser(this.updateUser);
-    this.handlerService.updateUsers(this.updateUsers);
-    this.handlerService.onMessage(this.updateChatHistory);
-    this.handlerService.onEnter(this.updateChatHistory);
-    this.handlerService.onLeave(this.updateChatHistory);
-    this.handlerService.onPrivateMessage(this.updatePrivateChatHistory)
     this.isSignedIn = true;
-   }
-
-   exitChatRoom(user: IUser) {
-    this.handlerService.userLeft(user);
-    this.isSignedIn = false;
-    this.onSignOut.emit();
   }
 
-   sendMessage(message: string) {
-    this.handlerService.message({user: this.user, message, type: 'user'});
-    this.chatmessage = '';
-   }
+  // deze private chat is nog niet helemaal gelukt...
 
-  updateUser = (user: IUser) => {
-    this.user = user;
-   }
-
-   updateUsers = (users: IUser[]) => {
-     this.connectedUsers = users;
-   }
-
-   updateChatHistory = (chatMessage: IChatHistoryMessage) => {
-     this.chatHistory.push(chatMessage);
-   }
-
-   updatePrivateChatHistory = (chatMessage: IPrivateChatHistoryMessage) => {
-     this.privateChatHistory.push(chatMessage);
-   }
-
-   // deze private chat is nog niet helemaal gelukt...
-
-   openPrivateChat(selUser: IUser) {
+  openPrivateChat(selUser: IUser) {
     this.selectedUser = selUser;
     this.openPopUp = !this.openPopUp;
     console.log(selUser);
@@ -75,5 +36,5 @@ export class ChatComponent implements OnInit {
       console.log(popup);
       popup.style.display = 'block';
     }
-   }
+  }
 }
