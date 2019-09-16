@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { HandlerService } from './services/handler.service';
-import { IChatHistoryMessage } from './model/chat.model';
-import { IUser } from './model/user.model';
+import { Component, OnInit } from "@angular/core";
+import { HandlerService } from "./services/handler.service";
+import { IChatHistoryMessage } from "./model/chat.model";
+import { IUser } from "./model/user.model";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements OnInit {
-
   isSignedIn: boolean;
   user: IUser;
   connectedUsers: IUser[];
   chatHistory: IChatHistoryMessage[] = [];
-  chatmessage = '';
+  chatmessage = "";
   handler;
 
   constructor(private handlerService: HandlerService) {
@@ -26,7 +25,7 @@ export class AppComponent implements OnInit {
   }
 
   updateChat() {
-    console.log("updateChat")
+    console.log("HOI");
     function exitChatRoom(user: IUser) {
       this.handler.userLeft(user);
       this.isSignedIn = false;
@@ -34,10 +33,10 @@ export class AppComponent implements OnInit {
     }
 
     const sendMessage = (message: string) => {
-      console.log("sendMessage")
-      this.handler.message({ user: this.user, message, type: 'user' });
-      this.chatmessage = '';
-    }
+      console.log("sendMessage");
+      this.handler.message({ user: this.user, message, type: "user" });
+      this.chatmessage = "";
+    };
 
     const updateUser = (user: IUser) => {
       this.user = user;
@@ -67,5 +66,4 @@ export class AppComponent implements OnInit {
   setIsSignedIn() {
     this.isSignedIn = true;
   }
-
 }
