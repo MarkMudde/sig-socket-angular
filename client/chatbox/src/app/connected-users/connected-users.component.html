@@ -1,9 +1,12 @@
 <div class="connectedUsers">
-    <h3>Users in deze chatroom</h3>
-    <p>klik op een naam voor een prive gesprek</p>
-    <div *ngFor="let conUser of connectedUsers">
-        <button (click)="openPrivateChat(conUser)" [disabled]="conUser.id == user.id">
+  <h3>Users in deze chatroom</h3>
+  <p>klik op een naam voor een prive gesprek</p>
+  <div *ngFor="let conUser of connectedUsers">
+    <button
+      (click)="openPrivateChat(conUser)"
+      [disabled]="conUser && user && conUser.id === user.id"
+    >
       {{ conUser.name }}
     </button>
-    </div>
+  </div>
 </div>

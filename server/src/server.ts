@@ -9,22 +9,21 @@ const io = Socketio(server);
 
 const connectedUsers: IUser[] = [];
 
-const addUser = (user) => {
+const addUser = user => {
   connectedUsers.push(user);
 };
 
 const removeUser = id => {
   const userIndex = connectedUsers.findIndex(user => user.id === id);
   connectedUsers.splice(userIndex, 1);
-}
+};
 
-io.on("connection", function (client) {
-  client.on("message", function (payload) {
-    console.log(`${client.id} && ${payload}`)
+io.on("connection", function(client) {
+  client.on("message", function(payload) {
     io.emit("message", payload);
   });
 
-  client.on("privateMessage", function (payload) {
+  client.on("privateMessage", function(payload) {
     const user1 = payload.userPair.user1;
     const user2 = payload.userPair.user2;
 
@@ -38,21 +37,21 @@ io.on("connection", function (client) {
       });
   });
 
-  client.on("enter", function (userName) {
+  client.on("enter", function(userName) {
     const newUser: IUser = { id: client.id, name: userName };
     addUser(newUser);
     io.to(client.id).emit("updateUser", newUser);
     io.emit("updateUsers", connectedUsers);
     io.emit("enter", newUser);
-  })
+  });
 
-  client.on("leave", function (user) {
+  client.on("leave", function(user) {
     removeUser(client.id);
     io.emit("updateUsers", connectedUsers);
     io.emit("leave", user);
   });
 
-  client.on("disconnect", function () {
+  client.on("disconnect", function() {
     const user = connectedUsers.find(user => user.id === client.id);
     if (!!user) {
       removeUser(client.id);
@@ -61,7 +60,7 @@ io.on("connection", function (client) {
     }
   });
 
-  client.on("error", function (err) {
+  client.on("error", function(err) {
     console.log(`Client with id ${client.id} threw error ${err}`);
     io.emit("error", err);
   });
