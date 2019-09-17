@@ -1,7 +1,7 @@
 <p>You,</p>
 {{ user.name }}
 <p>, are now in a private room with</p>
-{{ selectuser && selectedUser.name }}
+{{ selectedUser && selectedUser.name }}
 
 <div>
   <div *ngFor="let chatmessage of privateChatHistory">

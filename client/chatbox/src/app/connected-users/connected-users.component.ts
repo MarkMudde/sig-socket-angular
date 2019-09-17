@@ -11,7 +11,7 @@ export class ConnectedUsersComponent implements OnInit {
   @Input() user: IUser;
   @Input() connectedUsers: IUser[];
   @Output() updateSelectedUser = new EventEmitter<IUser>();
-  @Output() privateChat = new EventEmitter<boolean>();
+  @Output() updateIsPrivateChatOpen = new EventEmitter<boolean>();
 
   constructor() {}
 
@@ -19,6 +19,6 @@ export class ConnectedUsersComponent implements OnInit {
 
   openPrivateChat = (selectedUser: IUser) => {
     this.updateSelectedUser.emit(selectedUser);
-    this.privateChat.emit(true);
+    this.updateIsPrivateChatOpen.emit(true);
   };
 }

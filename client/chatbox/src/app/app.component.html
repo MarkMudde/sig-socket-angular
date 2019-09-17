@@ -1,4 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <app-login
   *ngIf="isSignedIn === false"
   (onSignIn)="setSignedIn($event)"
@@ -7,18 +6,18 @@
 <div class="chatbox" *ngIf="isSignedIn === true">
   <app-chat
     class="chatroom"
-    (onSignOut)="setSignedIn($event)"
     [handler]="handler"
     [user]="user"
     [chatHistory]="chatHistory"
+    (onSignOut)="setSignedIn($event)"
   ></app-chat>
   <app-connected-users
     class="connectedUsers"
-    (privateChat)="initPrivateChat(selectedUser)"
-    (updateSelectedUser)="getSelectedUser($event)"
     [handler]="handler"
     [user]="user"
     [connectedUsers]="connectedUsers"
+    (updateIsPrivateChatOpen)="getIsPrivateChatOpen($event)"
+    (updateSelectedUser)="getSelectedUser($event)"
   ></app-connected-users>
 </div>
 

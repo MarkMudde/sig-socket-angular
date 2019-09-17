@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     this.selectedUser = user;
   };
 
-  initPrivateChat(selectedUser: IUser) {
-    this.privateChatIsOpen = true;
+  getIsPrivateChatOpen(isOpen: boolean) {
+    this.privateChatIsOpen = isOpen;
   }
 }
