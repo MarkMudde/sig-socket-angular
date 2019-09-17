@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Output, Input } from "@angular/core";
 import { IUser } from "../model/user.model";
 import {
-  IChatHistoryMessage,
-  IPrivateChatHistoryMessage
+  IChatHistoryMessage
 } from "../model/chat.model";
 
 @Component({
@@ -13,9 +12,6 @@ import {
 export class ChatComponent {
   title = "the most interesting chatbox on earth";
   subtitle = "~~~ only discuss interesting subjects ~~~";
-  privateChatHistory: IPrivateChatHistoryMessage[] = [];
-  openPopUp = false;
-  selectedUser: IUser;
   chatmessage = "";
 
   @Input() handler: any;
@@ -33,16 +29,4 @@ export class ChatComponent {
     this.onSignOut.emit(false);
   };
 
-  // deze private chat is nog niet helemaal gelukt...
-  openPrivateChat(selUser: IUser) {
-    this.selectedUser = selUser;
-    this.openPopUp = !this.openPopUp;
-    console.log(selUser);
-    console.log(this.openPopUp);
-    if (this.openPopUp) {
-      const popup = document.getElementById("privatechat");
-      console.log(popup);
-      popup.style.display = "block";
-    }
-  }
 }

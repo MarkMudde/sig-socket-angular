@@ -52,10 +52,6 @@ io.on("connection", function (client) {
     io.emit("leave", user);
   });
 
-  client.on("privateMessage", function (payload) {
-    // TODO: advanced 3
-  });
-
   client.on("disconnect", function () {
     const user = connectedUsers.find(user => user.id === client.id);
     if (!!user) {

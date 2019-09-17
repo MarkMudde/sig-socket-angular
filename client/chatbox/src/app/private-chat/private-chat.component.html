@@ -1,3 +1,8 @@
-<p>
-  private-chat works!
-</p>
+<p>You, </p> {{ user.name }}
+<p>, are now in a private room with </p>{{ selectedUser.name }}
+
+<div>
+    <div *ngFor="let chatmessage of privateChatHistory">
+        {{chatmessage.chatHistoryMessage}}
+    </div>
+</div>

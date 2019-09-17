@@ -1,13 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<app-login
-  *ngIf="isSignedIn === false"
-  (onSignIn)="setSignedIn($event)"
-  [handler]="handler"
-></app-login>
-<app-chat
-  *ngIf="isSignedIn === true"
-  (onSignOut)="setSignedIn($event)"
-  [handler]="handler"
-  [user]="user"
-  [chatHistory]="chatHistory"
-></app-chat>
+<app-login *ngIf="isSignedIn === false" (onSignIn)="setSignedIn($event)" [handler]="handler"></app-login>
+<div class="chatbox" *ngIf="isSignedIn === true">
+    <app-chat class="chatroom" (onSignOut)="setSignedIn($event)" [handler]="handler" [user]="user" [chatHistory]="chatHistory"></app-chat>
+    <app-connected-users class="connectedUsers" (privateChat)="initPrivateChat(selectedUser)" [handler]="handler" [user]="user" [connectedUsers]="connectedUsers"></app-connected-users>
+</div>
+
+<app-private-chat *ngIf="privateChatIsOpen === true" [handler]="handler" [user]="user" [selectedUser]="selectedUser" [privateChatHistory]="privateChatHistory"></app-private-chat>

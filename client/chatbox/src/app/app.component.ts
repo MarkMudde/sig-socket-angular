@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { HandlerService } from "./services/handler.service";
 import { IChatHistoryMessage, IPrivateChatHistoryMessage } from "./model/chat.model";
 import { IUser } from "./model/user.model";
@@ -10,11 +10,13 @@ import { IUser } from "./model/user.model";
 })
 export class AppComponent implements OnInit {
   isSignedIn: boolean;
+  privateChatIsOpen: boolean;
   user: IUser;
   connectedUsers: IUser[];
   chatHistory: IChatHistoryMessage[] = [];
   privateChatHistory: IPrivateChatHistoryMessage[] = [];
   handler: any;
+  selectedUser: IUser;
 
   constructor(private handlerService: HandlerService) {
     this.handler = this.handlerService.handler(this.updateChat());
@@ -22,6 +24,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isSignedIn = false;
+    this.privateChatIsOpen = false;
   }
 
   updateChat() {
@@ -51,5 +54,11 @@ export class AppComponent implements OnInit {
 
   setSignedIn(signedIn: boolean) {
     this.isSignedIn = signedIn;
+  }
+
+  initPrivateChat(selectedUser: IUser) {
+    this.privateChatIsOpen = true;
+    this.selectedUser = selectedUser;
+    console.log(this.selectedUser.name);
   }
 }
