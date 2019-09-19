@@ -1,10 +1,23 @@
-<p>You,</p>
-{{ user.name }}
-<p>, are now in a private room with</p>
-{{ selectedUser && selectedUser.name }}
-
-<div>
-  <div *ngFor="let chatmessage of privateChatHistory">
-    {{ chatmessage.chatHistoryMessage }}
-  </div>
+<div class="chatContainer">
+    <div style="text-align:center">
+        <h1>Private chatroom</h1>
+        <h2>Just you and {{selectedUser.name}}</h2>
+    </div>
+    <div class="chatHistory">
+        <div *ngFor="let entry of privateChatHistory">
+            <ng-container *ngIf="entry.chatHistoryMessage.type === 'bot'">
+                {{ entry.chatHistoryMessage.user.name }} {{ entry.chatHistoryMessage.message }}
+            </ng-container>
+            <ng-container *ngIf="chatmessage.type === 'user'">
+                {{ entry.chatHistoryMessage.user.name }} zegt: {{ entry.chatHistoryMessage.message }}
+            </ng-container>
+        </div>
+    </div>
+    <div class="inputField">
+        <input type="text" #message [(ngModel)]="chatmessage" />
+        <button type="submit" (click)="sendMessage(message.value)">Send</button>
+    </div>
 </div>
+<button class="exitButton" type="submit" (click)="exitChatRoom(user)">
+  Exit Chatroom
+</button>

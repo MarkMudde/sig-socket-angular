@@ -18,12 +18,12 @@ const removeUser = id => {
   connectedUsers.splice(userIndex, 1);
 };
 
-io.on("connection", function(client) {
-  client.on("message", function(payload) {
+io.on("connection", function (client) {
+  client.on("message", function (payload) {
     io.emit("message", payload);
   });
 
-  client.on("privateMessage", function(payload) {
+  client.on("privateMessage", function (payload) {
     const user1 = payload.userPair.user1;
     const user2 = payload.userPair.user2;
 
@@ -33,11 +33,12 @@ io.on("connection", function(client) {
       .emit("privateMessage", {
         userPair: { user1, user2 },
         user: payload.user,
-        userMsg: payload.userMsg
+        userMsg: payload.userMsg,
+        type: "user"
       });
   });
 
-  client.on("enter", function(userName) {
+  client.on("enter", function (userName) {
     const newUser: IUser = { id: client.id, name: userName };
     addUser(newUser);
     io.to(client.id).emit("updateUser", newUser);
@@ -45,13 +46,13 @@ io.on("connection", function(client) {
     io.emit("enter", newUser);
   });
 
-  client.on("leave", function(user) {
+  client.on("leave", function (user) {
     removeUser(client.id);
     io.emit("updateUsers", connectedUsers);
     io.emit("leave", user);
   });
 
-  client.on("disconnect", function() {
+  client.on("disconnect", function () {
     const user = connectedUsers.find(user => user.id === client.id);
     if (!!user) {
       removeUser(client.id);
@@ -60,7 +61,7 @@ io.on("connection", function(client) {
     }
   });
 
-  client.on("error", function(err) {
+  client.on("error", function (err) {
     console.log(`Client with id ${client.id} threw error ${err}`);
     io.emit("error", err);
   });

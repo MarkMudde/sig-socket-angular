@@ -9,6 +9,7 @@ import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './login/login.component';
 import { ConnectedUsersComponent } from './connected-users/connected-users.component';
 import { PrivateChatComponent } from './private-chat/private-chat.component';
+import { NgbdModalComponentModule } from './modal/modal-component.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PrivateChatComponent } from './private-chat/private-chat.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbdModalComponentModule
   ],
   providers: [
     HandlerService
