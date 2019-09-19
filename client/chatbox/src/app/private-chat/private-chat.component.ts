@@ -21,7 +21,7 @@ export class PrivateChatComponent implements OnInit {
   ngOnInit() { }
 
   sendMessage = (message: string) => {
-    this.handler.message({ user: this.user, message, type: "user" });
+    this.handler.privateMessage({ userPair: { user1: this.user, user2: this.selectedUser }, message, type: "user" });
     this.chatmessage = "";
   };
 
@@ -29,7 +29,8 @@ export class PrivateChatComponent implements OnInit {
 
 @Component({
   selector: 'ngbd-modal-component',
-  templateUrl: './private-chat.component.html'
+  template: `<div></div>
+  `
 })
 export class NgbdModalComponent {
   constructor(private modalService: NgbModal) { }

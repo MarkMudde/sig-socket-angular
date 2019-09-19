@@ -30,6 +30,19 @@ export class AppComponent implements OnInit {
     this.privateChatIsOpen = false;
   }
 
+  getIndexPrivateChat = (user1: IUser, user2: IUser) => {
+    if (!user1 || !user2) {
+      return -1;
+    }
+    return this.privateChatHistory.findIndex(
+      c =>
+        (c.userPair.user1.id === user1.id ||
+          c.userPair.user1.id === user2.id) &&
+        (c.userPair.user2.id === user2.id ||
+          c.userPair.user2.id === user1.id)
+    );
+  }
+
   updateChat() {
     const updateUser = (user: IUser) => {
       this.user = user;
@@ -43,17 +56,50 @@ export class AppComponent implements OnInit {
       this.chatHistory.push(chatMessage);
     };
 
-    const updatePrivateChatHistory = (
-      chatMessage: IPrivateChatHistoryMessage
+    const updatePrivateHistory = (
+      payload: any
     ) => {
-      this.privateChatHistory.push(chatMessage);
+
+      const user1 = payload.userPair.user1;
+      const user2 = payload.userPair.user2;
+
+      const i = this.getIndexPrivateChat(user1, user2);
+      const privPairChat = this.privateChatHistory[i];
+
+      if (i === -1) {
+        // Create userpair with chathistory
+        const initPrivChat = {
+          userPair: { user1, user2 },
+          chatHistory: [
+            {
+              userName: payload.userName,
+              message: payload.message,
+              type: "user"
+            }
+          ]
+        };
+
+        this.privateChatHistory.push(initPrivChat);
+
+      } else {
+        // Add message to chathistory from existing userpair
+        privPairChat.chatHistory.push({
+          userName: payload.userName,
+          message: payload.message,
+          type: "user"
+        });
+
+        const newHist = [...this.privateChatHistory];
+        newHist[i] = { ...privPairChat };
+        this.privateChatHistory = newHist;
+      }
     };
 
     return {
       updateUser,
       updateUsers,
       updateHistory,
-      updatePrivateChatHistory
+      updatePrivateHistory
     };
   }
 

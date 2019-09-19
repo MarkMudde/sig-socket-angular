@@ -1,0 +1,17 @@
+.chatContainer {
+    display: flex;
+    flex-flow: wrap column;
+}
+
+.chatHistory {
+    padding: 1em;
+    border: 2px solid black;
+    height: 200px;
+}
+
+.inputField {}
+
+.exitButton {
+    width: 8em;
+    margin-top: 3em;
+}

@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { ConnectedUsersComponent } from './connected-users/connected-users.component';
 import { PrivateChatComponent } from './private-chat/private-chat.component';
 import { NgbdModalComponentModule } from './modal/modal-component.module';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,10 +24,12 @@ import { NgbdModalComponentModule } from './modal/modal-component.module';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    NgbModule,
     NgbdModalComponentModule
   ],
   providers: [
-    HandlerService
+    HandlerService,
+    NgbActiveModal
   ],
   bootstrap: [AppComponent]
 })

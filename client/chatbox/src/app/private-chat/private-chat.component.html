@@ -1,23 +1,34 @@
-<div class="chatContainer">
-    <div style="text-align:center">
-        <h1>Private chatroom</h1>
-        <h2>Just you and {{selectedUser.name}}</h2>
-    </div>
-    <div class="chatHistory">
-        <div *ngFor="let entry of privateChatHistory">
-            <ng-container *ngIf="entry.chatHistoryMessage.type === 'bot'">
-                {{ entry.chatHistoryMessage.user.name }} {{ entry.chatHistoryMessage.message }}
-            </ng-container>
-            <ng-container *ngIf="chatmessage.type === 'user'">
-                {{ entry.chatHistoryMessage.user.name }} zegt: {{ entry.chatHistoryMessage.message }}
-            </ng-container>
+<div class="modal-header">
+    <h4 class="modal-title">Hi there!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    <p>Hello, {{name}}!</p>
+    <div class="chatContainer">
+        <div style="text-align:center">
+            <h1>Private chatroom</h1>
+            <h2>Just you and {{selectedUser.name}}</h2>
+        </div>
+        <div class="chatHistory">
+            <div *ngFor="let entry of privateChatHistory">
+                <ng-container *ngIf="entry.chatHistory.type">
+                    <ng-container *ngIf="entry.chatHistory.type === 'bot'">
+                        {{ entry.chatHistory.userName }} {{ entry.chatHistory.message }}
+                    </ng-container>
+                    <ng-container *ngIf="entry.chatHistory.type === 'user'">
+                        {{ entry.chatHistory.userName }} zegt: {{ entry.chatHistory.message }}
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <div class="inputField">
+            <input type="text" #message [(ngModel)]="chatmessage" />
+            <button type="submit" (click)="sendMessage(message.value)">Send</button>
         </div>
     </div>
-    <div class="inputField">
-        <input type="text" #message [(ngModel)]="chatmessage" />
-        <button type="submit" (click)="sendMessage(message.value)">Send</button>
-    </div>
 </div>
-<button class="exitButton" type="submit" (click)="exitChatRoom(user)">
-  Exit Chatroom
-</button>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
