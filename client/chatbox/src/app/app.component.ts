@@ -5,6 +5,8 @@ import {
   IPrivateChatHistoryMessage
 } from "./model/chat.model";
 import { IUser } from "./model/user.model";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { PrivateChatComponent } from "./private-chat/private-chat.component";
 
 @Component({
   selector: "app-root",
@@ -19,9 +21,13 @@ export class AppComponent implements OnInit {
   selectedUser: IUser;
   chatHistory: IChatHistoryMessage[] = [];
   privateChatHistory: IPrivateChatHistoryMessage[] = [];
+  currentPrivateChat: IChatHistoryMessage[] = [];
   handler: any;
 
-  constructor(private handlerService: HandlerService) {
+  constructor(
+    private handlerService: HandlerService,
+    private modalService: NgbModal
+  ) {
     this.handler = this.handlerService.handler(this.updateChat());
   }
 
@@ -38,10 +44,9 @@ export class AppComponent implements OnInit {
       c =>
         (c.userPair.user1.id === user1.id ||
           c.userPair.user1.id === user2.id) &&
-        (c.userPair.user2.id === user2.id ||
-          c.userPair.user2.id === user1.id)
+        (c.userPair.user2.id === user2.id || c.userPair.user2.id === user1.id)
     );
-  }
+  };
 
   updateChat() {
     const updateUser = (user: IUser) => {
@@ -56,13 +61,9 @@ export class AppComponent implements OnInit {
       this.chatHistory.push(chatMessage);
     };
 
-    const updatePrivateHistory = (
-      payload: any
-    ) => {
-
+    const updatePrivateHistory = (payload: any) => {
       const user1 = payload.userPair.user1;
       const user2 = payload.userPair.user2;
-
       const i = this.getIndexPrivateChat(user1, user2);
       const privPairChat = this.privateChatHistory[i];
 
@@ -80,7 +81,6 @@ export class AppComponent implements OnInit {
         };
 
         this.privateChatHistory.push(initPrivChat);
-
       } else {
         // Add message to chathistory from existing userpair
         privPairChat.chatHistory.push({
@@ -92,6 +92,16 @@ export class AppComponent implements OnInit {
         const newHist = [...this.privateChatHistory];
         newHist[i] = { ...privPairChat };
         this.privateChatHistory = newHist;
+      }
+      if (
+        !!this.selectedUser &&
+        (user1.id === this.selectedUser.id || user2.id === this.selectedUser.id)
+      ) {
+        this.currentPrivateChat.push({
+          userName: payload.userName,
+          message: payload.message,
+          type: "user"
+        });
       }
     };
 
@@ -109,9 +119,29 @@ export class AppComponent implements OnInit {
 
   getSelectedUser = (user: IUser) => {
     this.selectedUser = user;
+    this.getPrivateChat(this.getIndexPrivateChat(this.user, user));
   };
 
   getIsPrivateChatOpen(isOpen: boolean) {
     this.privateChatIsOpen = isOpen;
+    if (isOpen) {
+      this.open();
+    }
   }
+
+  getPrivateChat = (privateChatIndex: number) => {
+    if (privateChatIndex > -1) {
+      this.currentPrivateChat = [
+        ...this.privateChatHistory[privateChatIndex].chatHistory
+      ];
+    }
+  };
+
+  open = () => {
+    const modalRef = this.modalService.open(PrivateChatComponent);
+    modalRef.componentInstance.handler = this.handler;
+    modalRef.componentInstance.user = this.user;
+    modalRef.componentInstance.selectedUser = this.selectedUser;
+    modalRef.componentInstance.privateChatHistory = this.currentPrivateChat;
+  };
 }

@@ -1,9 +1,22 @@
-<app-login *ngIf="isSignedIn === false" (onSignIn)="setSignedIn($event)" [handler]="handler"></app-login>
+<app-login
+  *ngIf="isSignedIn === false"
+  (onSignIn)="setSignedIn($event)"
+  [handler]="handler"
+></app-login>
 <div class="chatbox" *ngIf="isSignedIn === true">
-    <app-chat class="chatroom" [handler]="handler" [user]="user" [chatHistory]="chatHistory" (onSignOut)="setSignedIn($event)"></app-chat>
-    <app-connected-users class="connectedUsers" [handler]="handler" [user]="user" [connectedUsers]="connectedUsers" (updateIsPrivateChatOpen)="getIsPrivateChatOpen($event)" (updateSelectedUser)="getSelectedUser($event)"></app-connected-users>
+  <app-chat
+    class="chatroom"
+    [handler]="handler"
+    [user]="user"
+    [chatHistory]="chatHistory"
+    (onSignOut)="setSignedIn($event)"
+  ></app-chat>
+  <app-connected-users
+    class="connectedUsers"
+    [handler]="handler"
+    [user]="user"
+    [connectedUsers]="connectedUsers"
+    (updateIsPrivateChatOpen)="getIsPrivateChatOpen($event)"
+    (updateSelectedUser)="getSelectedUser($event)"
+  ></app-connected-users>
 </div>
-
-<app-private-chat *ngIf="privateChatIsOpen === true" [handler]="handler" [user]="user" [selectedUser]="selectedUser" [privateChatHistory]="privateChatHistory"></app-private-chat>
-
-<ngbd-modal-component> </ngbd-modal-component>
