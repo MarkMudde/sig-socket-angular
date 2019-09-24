@@ -20,11 +20,3 @@
     (updateSelectedUser)="getSelectedUser($event)"
   ></app-connected-users>
 </div>
-
-<app-private-chat
-  *ngIf="privateChatIsOpen === true"
-  [handler]="handler"
-  [user]="user"
-  [selectedUser]="selectedUser"
-  [privateChatHistory]="privateChatHistory"
-></app-private-chat>

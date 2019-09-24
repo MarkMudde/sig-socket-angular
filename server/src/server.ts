@@ -32,8 +32,9 @@ io.on("connection", function(client) {
       .to(user2.id)
       .emit("privateMessage", {
         userPair: { user1, user2 },
-        user: payload.user,
-        userMsg: payload.userMsg
+        userName: payload.user.name,
+        message: payload.message,
+        type: "user"
       });
   });
 

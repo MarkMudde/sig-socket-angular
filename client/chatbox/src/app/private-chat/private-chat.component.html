@@ -1,10 +1,45 @@
-<!-- <p>You,</p>
-{{ user.name }}
-<p>, are now in a private room with</p>
-{{ selectedUser && selectedUser.name }} -->
-
-<!-- <div>
-  <div *ngFor="let chatmessage of privateChatHistory">
-    {{ chatmessage.chatHistoryMessage }}
+<div class="modal-header">
+  <h4 class="modal-title">Hi there!</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="chatContainer">
+    <div style="text-align:center">
+      <h1>Private chatroom</h1>
+      <h2>Just you and {{ selectedUser.name }}</h2>
+    </div>
+    <div class="chatHistory">
+      <div *ngFor="let entry of privateChatHistory">
+        <ng-container *ngIf="entry.type">
+          <ng-container *ngIf="entry.type === 'bot'">
+            {{ entry.userName }} {{ entry.message }}
+          </ng-container>
+          <ng-container *ngIf="entry.type === 'user'">
+            {{ entry.userName }} zegt:
+            {{ entry.message }}
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <div class="inputField">
+      <input type="text" #message [(ngModel)]="chatmessage" />
+      <button type="submit" (click)="sendMessage(message.value)">Send</button>
+    </div>
   </div>
-</div> -->
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close('Close click')"
+  >
+    Close
+  </button>
+</div>
