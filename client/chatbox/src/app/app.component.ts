@@ -122,22 +122,21 @@ export class AppComponent implements OnInit {
     this.getPrivateChat(this.getIndexPrivateChat(this.user, user));
   };
 
-  getIsPrivateChatOpen(isOpen: boolean) {
+  getIsPrivateChatOpen = (isOpen: boolean) => {
     this.privateChatIsOpen = isOpen;
     if (isOpen) {
-      this.open();
-    }
-  }
-
-  getPrivateChat = (privateChatIndex: number) => {
-    if (privateChatIndex > -1) {
-      this.currentPrivateChat = [
-        ...this.privateChatHistory[privateChatIndex].chatHistory
-      ];
+      this.openPrivateChat();
     }
   };
 
-  open = () => {
+  getPrivateChat = (privateChatIndex: number) => {
+    this.currentPrivateChat =
+      privateChatIndex > -1
+        ? [...this.privateChatHistory[privateChatIndex].chatHistory]
+        : [];
+  };
+
+  openPrivateChat = () => {
     const modalRef = this.modalService.open(PrivateChatComponent);
     modalRef.componentInstance.handler = this.handler;
     modalRef.componentInstance.user = this.user;
